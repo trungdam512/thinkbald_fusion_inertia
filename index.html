@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fusion Energy Leaders: Investor Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface-label: #f0ede8;
+    --border: #e2ddd8;
+    --accent-cfs: #0077b6;
+    --accent-cfs-light: #e8f4fb;
+    --accent-helion: #c94e1a;
+    --accent-helion-light: #fdf0eb;
+    --accent-inertia: #2d7d46;
+    --accent-inertia-light: #eaf5ee;
+    --text-primary: #1a1814;
+    --text-muted: #6b6560;
+    --text-dim: #a09b96;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    padding: 52px 36px;
+    overflow-x: hidden;
+  }
+
+  /* Subtle dot grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, #c8c3bd 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    margin-bottom: 52px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 4.5vw, 52px);
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent-inertia);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 520px;
+    line-height: 1.65;
+  }
+
+  /* Company header cards */
+  .company-headers {
+    display: grid;
+    grid-template-columns: 190px repeat(3, 1fr);
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .header-spacer { background: transparent; }
+
+  .company-card {
+    padding: 22px 20px;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.7s ease both;
+    box-shadow: var(--shadow);
+  }
+
+  .company-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+
+  .company-card.cfs { background: var(--accent-cfs-light); }
+  .company-card.cfs::before { background: var(--accent-cfs); }
+  .company-card.helion { background: var(--accent-helion-light); }
+  .company-card.helion::before { background: var(--accent-helion); }
+  .company-card.inertia { background: var(--accent-inertia-light); }
+  .company-card.inertia::before { background: var(--accent-inertia); }
+
+  .company-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 21px;
+    margin-bottom: 4px;
+  }
+  .company-card.cfs .company-name { color: var(--accent-cfs); }
+  .company-card.helion .company-name { color: var(--accent-helion); }
+  .company-card.inertia .company-name { color: var(--accent-inertia); }
+
+  .company-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .new-badge {
+    display: inline-block;
+    background: rgba(45, 125, 70, 0.12);
+    color: var(--accent-inertia);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 9px;
+    border: 1px solid rgba(45, 125, 70, 0.25);
+    font-weight: 500;
+  }
+
+  /* Table */
+  .table-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 190px repeat(3, 1fr);
+    gap: 3px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .row:nth-child(1) { animation-delay: 0.05s; }
+  .row:nth-child(2) { animation-delay: 0.1s; }
+  .row:nth-child(3) { animation-delay: 0.15s; }
+  .row:nth-child(4) { animation-delay: 0.2s; }
+  .row:nth-child(5) { animation-delay: 0.25s; }
+  .row:nth-child(6) { animation-delay: 0.3s; }
+  .row:nth-child(7) { animation-delay: 0.35s; }
+  .row:nth-child(8) { animation-delay: 0.4s; }
+  .row:nth-child(9) { animation-delay: 0.45s; }
+  .row:nth-child(10) { animation-delay: 0.5s; }
+
+  .label-cell {
+    background: var(--surface-label);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .label-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .data-cell {
+    background: var(--surface);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 3px solid transparent;
+    transition: background 0.15s;
+  }
+
+  .data-cell:hover { background: #faf9f7; }
+
+  .data-cell.cfs { border-left-color: rgba(0, 119, 182, 0.2); }
+  .data-cell.helion { border-left-color: rgba(201, 78, 26, 0.2); }
+  .data-cell.inertia { border-left-color: rgba(45, 125, 70, 0.2); }
+
+  .data-primary {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .data-secondary {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .data-highlight {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .data-cell.cfs .data-highlight { color: var(--accent-cfs); }
+  .data-cell.helion .data-highlight { color: var(--accent-helion); }
+  .data-cell.inertia .data-highlight { color: var(--accent-inertia); }
+
+  /* Score bars */
+  .score-bar-wrap {
+    margin-top: 10px;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-bar {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .cfs .score-bar { background: var(--accent-cfs); }
+  .helion .score-bar { background: var(--accent-helion); }
+  .inertia .score-bar { background: var(--accent-inertia); }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    margin: 4px 3px 0 0;
+    font-weight: 500;
+  }
+  .tag-green { background: rgba(45,125,70,0.1); color: #226038; border: 1px solid rgba(45,125,70,0.25); }
+  .tag-blue { background: rgba(0,119,182,0.1); color: #005f94; border: 1px solid rgba(0,119,182,0.25); }
+  .tag-orange { background: rgba(201,78,26,0.1); color: #a83f10; border: 1px solid rgba(201,78,26,0.25); }
+  .tag-gray { background: rgba(107,101,96,0.08); color: var(--text-muted); border: 1px solid rgba(107,101,96,0.2); }
+
+  /* Alternating row shading */
+  .row:nth-child(even) .label-cell,
+  .row:nth-child(even) .data-cell {
+    background: #faf9f7;
+  }
+  .row:nth-child(even) .data-cell:hover { background: #f4f2ee; }
+
+  /* Verdict section */
+  .verdict-section {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    animation: fadeUp 0.7s 0.55s ease both;
+  }
+
+  .verdict-card {
+    padding: 24px;
+    border-radius: 10px;
+    position: relative;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    border-top: 4px solid transparent;
+  }
+
+  .verdict-card.cfs { border-top-color: var(--accent-cfs); }
+  .verdict-card.helion { border-top-color: var(--accent-helion); }
+  .verdict-card.inertia { border-top-color: var(--accent-inertia); }
+
+  .verdict-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .verdict-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .verdict-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* Bottom rounded corners */
+  .row:last-child .label-cell { border-radius: 0 0 0 8px; }
+  .row:last-child .data-cell:last-child { border-radius: 0 0 8px 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header style="position:relative;"><img src="data:image/jpeg;base64,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" style="position:absolute; top:0; right:0; width:110px; height:110px; object-fit:contain;" alt="Energy thinker">
+    <p class="eyebrow">Investor Intelligence · February 2026</p>
+    <h1>Fusion's Three<br>Frontrunners vs. <em>Inertia</em></h1>
+    <p class="subtitle">A structured comparison of the three most credible private fusion plays — viewed through a venture capital lens.</p>
+  </header>
+
+  <!-- Company header row -->
+  <div class="company-headers">
+    <div class="header-spacer"></div>
+    <div class="company-card cfs">
+      <div class="company-name">CFS</div>
+      <div class="company-sub">Commonwealth Fusion Systems</div>
+    </div>
+    <div class="company-card helion">
+      <div class="company-name">Helion</div>
+      <div class="company-sub">Helion Energy</div>
+    </div>
+    <div class="company-card inertia">
+      <div class="company-name">Inertia</div>
+      <div class="company-sub">Inertia Fusion Energy</div>
+      <div class="new-badge">★ Series A · 2025</div>
+    </div>
+  </div>
+
+  <!-- Table rows -->
+  <div class="table-body">
+
+    <!-- Funding -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Total<br>Funding Raised</span></div>
+      <div class="data-cell cfs">
+        <div class="data-highlight">~$3B</div>
+        <div class="data-secondary">Multiple rounds; largest single raise in private fusion history at time</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-highlight">~$2.8B</div>
+        <div class="data-secondary">Includes Sam Altman's $375M lead in 2021 Series E</div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-highlight">$450M</div>
+        <div class="data-secondary">Series A — largest-ever ICF startup round; led by Bessemer + GV</div>
+      </div>
+    </div>
+
+    <!-- Physics Approach -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Fusion<br>Approach</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Magnetic Confinement</div>
+        <div class="data-secondary">High-temp superconducting tokamak (SPARC). Plasma held in donut-shaped magnetic field.</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Pulsed Magnetic Confinement</div>
+        <div class="data-secondary">Field-Reversed Configuration (FRC). Plasma collide at high velocity; direct electricity generation.</div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Inertial Confinement (Laser)</div>
+        <div class="data-secondary">Lasers compress fuel pellets to ignition. Same pathway as NIF's proven ignition.</div>
+      </div>
+    </div>
+
+    <!-- Physics proven? -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Core Physics<br>Validated?</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Partially ✓</div>
+        <div class="data-secondary">HTS magnet world record (20T) proven in 2021. Ignition not yet demonstrated at SPARC scale.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:65%"></div></div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Partially ✓</div>
+        <div class="data-secondary">Plasma heated to 100M°C in Trenta prototype. Net energy gain not yet demonstrated.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:55%"></div></div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Yes — NIF Proven ✓✓</div>
+        <div class="data-secondary">Only approach where ignition breakeven has been scientifically demonstrated (NIF, 2022). Inertia commercializes this exact pathway.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:90%"></div></div>
+      </div>
+    </div>
+
+    <!-- Key Investors -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Key Investors<br>& Backers</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Eni, Google, Bill Gates, Tiger Global, Khosla Ventures, Temasek</div>
+        <div class="data-secondary">Strategic energy + growth equity blend</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Sam Altman, Peter Thiel, Y Combinator, Mithril Capital</div>
+        <div class="data-secondary">Silicon Valley insiders; Altman personally led $375M round</div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Bessemer, GV (Google), IQT (CIA), Neo, Uncork, Threshold, WndrCo</div>
+        <div class="data-secondary">Tier-1 VC-led; national security interest via IQT is notable</div>
+      </div>
+    </div>
+
+    <!-- Leadership -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Leadership<br>Profile</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Bob Mumgaard (CEO, MIT plasma physicist)</div>
+        <div class="data-secondary">Science-first leadership. MIT spinout with deep academic roots and DOE relationships.</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">David Kirtley (CEO, plasma engineer)</div>
+        <div class="data-secondary">Technical founder-operator. Tight-knit team; Sam Altman as chairman adds strategic weight.</div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Jeff Lawson (CEO, ex-Twilio) + Dr. Annie Kritcher (NIF Chief Scientist) + Prof. Mike Dunne (NIF CTO)</div>
+        <div class="data-secondary">Rare combo: proven tech founder + world's top ICF scientists. Strongest commercial execution pedigree.</div>
+      </div>
+    </div>
+
+    <!-- Commercial Timeline -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Commercial<br>Timeline</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">First plasma: 2025–26</div>
+        <div class="data-secondary">ARC commercial plant targeting early 2030s. Google PPA signed for 200MW.</div>
+        <span class="tag tag-blue">Most Advanced Build</span>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Electricity delivery: 2028</div>
+        <div class="data-secondary">Microsoft PPA for first-ever commercial fusion power sale. Orion plant under development.</div>
+        <span class="tag tag-orange">Most Aggressive Timeline</span>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Construction start: 2030</div>
+        <div class="data-secondary">Earlier than CFS/Helion in VC entry point; further out in commercial delivery.</div>
+        <span class="tag tag-green">Best Valuation Entry</span>
+      </div>
+    </div>
+
+    <!-- Key PPA / Customers -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Power Purchase<br>Agreements</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Google (200 MW)</div>
+        <div class="data-secondary">Virginia-based ARC plant. DOE milestone funding participant.</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Microsoft (~50 MW+)</div>
+        <div class="data-secondary">World's first fusion PPA. Includes penalty clause if Helion misses 2028 deadline.</div>
+        <span class="tag tag-orange">First Mover</span>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">None yet (Series A stage)</div>
+        <div class="data-secondary">Too early for PPA. Defense/gov contracts via IQT possible early revenue stream.</div>
+      </div>
+    </div>
+
+    <!-- Biggest engineering challenge -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Primary<br>Engineering Risk</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">HTS tape supply chain</div>
+        <div class="data-secondary">Needs ~10,000 km of superconducting tape per plant. Global supply must scale dramatically.</div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Direct electricity conversion</div>
+        <div class="data-secondary">Novel approach with no commercial precedent. Pulsed plasma must be converted to grid power at scale.</div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Target manufacturing + laser repetition rate</div>
+        <div class="data-secondary">NIF fires occasionally with hand-made targets. Inertia needs 10 shots/sec with sub-$1 pellets at mass scale.</div>
+      </div>
+    </div>
+
+    <!-- VC Return Potential -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">VC Return<br>Potential</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Moderate–High</div>
+        <div class="data-secondary">Significant dilution already occurred. Late entry = compressed upside. Most de-risked.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:55%"></div></div>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Moderate–High</div>
+        <div class="data-secondary">Similar to CFS. Altman premium baked in. Timeline risk could reset valuation.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:58%"></div></div>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Highest (if successful)</div>
+        <div class="data-secondary">Series A entry, uncorrelated physics path, strongest founding team for commercialization. Risk-adjusted upside is most compelling for new investors.</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:85%"></div></div>
+      </div>
+    </div>
+
+    <!-- Investor Thesis -->
+    <div class="row">
+      <div class="label-cell"><span class="label-text">Ideal Investor<br>Profile</span></div>
+      <div class="data-cell cfs">
+        <div class="data-primary">Strategic / Corporate</div>
+        <div class="data-secondary">Energy companies, utilities, sovereign wealth funds seeking near-term clean baseload exposure.</div>
+        <span class="tag tag-blue">Low Risk</span><span class="tag tag-gray">Lower Return</span>
+      </div>
+      <div class="data-cell helion">
+        <div class="data-primary">Tech-forward / Growth Equity</div>
+        <div class="data-secondary">Investors comfortable with novel engineering risk and tight 2028 deadline pressure.</div>
+        <span class="tag tag-orange">Medium Risk</span><span class="tag tag-gray">Medium Return</span>
+      </div>
+      <div class="data-cell inertia">
+        <div class="data-primary">Venture Capital / Early Stage</div>
+        <div class="data-secondary">Classic VC bet: early entry, proven science, strong jockey, long runway needed.</div>
+        <span class="tag tag-green">High Risk</span><span class="tag tag-green">Highest Return</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Verdict cards -->
+  <div class="verdict-section">
+    <div class="verdict-card cfs">
+      <div class="verdict-label">Investor Verdict · CFS</div>
+      <div class="verdict-title">The Safe Bet</div>
+      <div class="verdict-text">Most mature build, strongest corporate partnerships, and the clearest path to grid power in the early 2030s. But valuations are rich and the upside for new investors is limited. Best for strategics and late-stage funds seeking portfolio insurance.</div>
+    </div>
+    <div class="verdict-card helion">
+      <div class="verdict-label">Investor Verdict · Helion</div>
+      <div class="verdict-title">The Moonshot Clock</div>
+      <div class="verdict-text">The 2028 Microsoft deadline is either the most credible commercial fusion contract ever written, or a pressure cooker that forces a valuation reset. Highest binary risk. Unique direct-electricity model could be transformative if it works.</div>
+    </div>
+    <div class="verdict-card inertia">
+      <div class="verdict-label">Investor Verdict · Inertia</div>
+      <div class="verdict-title">The Smart New Money</div>
+      <div class="verdict-text">Early entry, NIF-proven physics, and a founding team that combines world-class science with proven tech-company execution. The manufacturing scale challenge is real, but the VC math is the most compelling of the three. Bessemer and GV are not wrong to be here.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
